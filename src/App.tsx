@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserHistory } from "history";
+import React from "react";
+import { Router, Switch } from "react-router-dom";
+import routes, { RoutesProps } from "./router";
+import { RouteWithSubRoutes } from "./router/common";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/es/locale/zh_CN";
+import moment from "moment";
+import "moment/locale/zh-cn";
+moment.locale("en");
 
-function App() {
+const history = createBrowserHistory();
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ConfigProvider locale={zhCN}>
+      <Router history={history}>
+        <Switch>
+          {routes.map((route: RoutesProps, i: number) => {
+            return RouteWithSubRoutes(route, i);
+          })}
+        </Switch>
+      </Router>
+    </ConfigProvider>
   );
-}
+};
 
 export default App;

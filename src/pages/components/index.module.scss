@@ -1,0 +1,38 @@
+$leftWidth: 256px;
+$headerHeight: 70px;
+
+.header {
+  color: #fff;
+  background: #000;
+  height: $headerHeight;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  h1 {
+    width: $leftWidth;
+    color: inherit;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0;
+    font-size: 20px;
+    height: 100%;
+    line-height: $headerHeight;
+  }
+  .user {
+    line-height: $headerHeight;
+    margin: 0 50px 0;
+    span {
+      margin-left: 5px;
+    }
+  }
+}
+
+.tag_input {
+  width: 78px !important;
+  margin-right: 8px;
+  vertical-align: top;
+}

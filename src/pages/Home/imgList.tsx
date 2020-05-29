@@ -6,12 +6,12 @@ import {
   EditOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import { TableProps } from ".";
+import { ImgDataListProps } from "../../service/Home";
 
 const { Meta } = Card;
 
 interface ImgListProps {
-  data: TableProps[];
+  data: ImgDataListProps[];
 }
 
 const ImgList: FC<ImgListProps> = ({ data }) => {

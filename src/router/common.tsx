@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Route } from "react-router-dom";
 import { RoutesProps } from "./index";
+import Header from "../pages/components/header";
 
 const RouteWithSubRoutes = (route: RoutesProps, index: number) => {
   return (
@@ -9,12 +10,15 @@ const RouteWithSubRoutes = (route: RoutesProps, index: number) => {
       path={route.path}
       exact={route.exact}
       render={(props) => (
-        <Suspense fallback={null}>
-          <route.component {...props} routes={route.routes} />
-        </Suspense>
+        <>
+          {route.hideHeader ? null : <Header />}
+          <Suspense fallback={null}>
+            <route.component {...props} routes={route.routes} />
+          </Suspense>
+        </>
       )}
     />
   );
 };
 
-export { RouteWithSubRoutes };
+export default RouteWithSubRoutes;

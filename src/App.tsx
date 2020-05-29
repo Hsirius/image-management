@@ -2,7 +2,7 @@ import { createBrowserHistory } from "history";
 import React from "react";
 import { Router, Switch } from "react-router-dom";
 import routes, { RoutesProps } from "./router";
-import { RouteWithSubRoutes } from "./router/common";
+import RouteWithSubRoutes from "./router/common";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/es/locale/zh_CN";
 import moment from "moment";

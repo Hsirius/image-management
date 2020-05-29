@@ -1,36 +1,48 @@
 import { useObserver, useLocalStore } from "mobx-react-lite";
 import React from "react";
-import { Form, Upload, Button, Radio, Input } from "antd";
+import { Form, Upload, Button, Radio, Input, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import styles from "./index.module.scss";
 import { RadioChangeEvent } from "antd/lib/radio";
 import TagComponent from "../components/tagComponent";
-import { RcCustomRequestOptions } from "antd/lib/upload/interface";
-
-const normFile = (e: any) => {
-  console.log("Upload event:", e);
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
+import { localUpload } from "../../service/Upload";
 
 const LocalUpload = () => {
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
   };
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
   const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+    // const formData = new FormData();
+    // values.dragger.forEach((file: File) => {
+    //   formData.append("files", file);
+    // });
+    // console.log(formData.get("files"));
+    localUpload({
+      files: values.dragger,
+    }).then((res) => {
+      if (res.data.success) {
+        message.success("上传成功");
+      } else {
+        message.error("上传失败");
+      }
+    });
   };
   const store = useLocalStore(() => ({
     property: "public",
     tagData: ["tag1", "tag2", "tag3"],
+    fileList: [],
     updateTagData: (data: string[]) => {
       store.tagData = data;
     },
-    customRequest: (options: RcCustomRequestOptions) => {
-      console.log(options);
+    handleBeforeUpload: () => {
+      return false;
     },
   }));
   return useObserver(() => (
@@ -52,8 +64,9 @@ const LocalUpload = () => {
           <Upload.Dragger
             name="files"
             multiple
+            fileList={store.fileList}
             accept=".tiff,.jpg,.png"
-            customRequest={store.customRequest}
+            beforeUpload={store.handleBeforeUpload}
           >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />

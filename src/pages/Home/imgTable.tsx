@@ -1,20 +1,22 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Divider, Popconfirm, Table, message } from "antd";
+import { Divider, Popconfirm, Table, message, Tag } from "antd";
 import { useLocalStore, useObserver } from "mobx-react-lite";
 import React, { ReactText, FC } from "react";
 import styles from "./index.module.scss";
-import { TableProps } from ".";
 import EditModel from "./editModel";
+import { Link } from "react-router-dom";
+import { ImgDataListProps, deleteImg } from "../../service/Home";
 
 interface ImgTableProps {
-  data: TableProps[];
+  data: ImgDataListProps[];
+  loading: boolean;
   onRefresh: () => void;
 }
 
-const ImgTable: FC<ImgTableProps> = ({ data, onRefresh }) => {
+const ImgTable: FC<ImgTableProps> = ({ data, loading, onRefresh }) => {
   const store = useLocalStore(() => ({
     visible: false,
-    currentData: {} as TableProps,
+    currentData: {} as ImgDataListProps,
     selectedRowKeys: [] as ReactText[],
     onSelectChange: (selectedRowKeys: ReactText[]) => {
       store.selectedRowKeys = selectedRowKeys;
@@ -22,28 +24,25 @@ const ImgTable: FC<ImgTableProps> = ({ data, onRefresh }) => {
     clearSelected: () => {
       store.selectedRowKeys = [];
     },
-    edit: (record: TableProps) => {
+    edit: (record: ImgDataListProps) => {
       store.visible = true;
       store.currentData = record;
     },
-    delete: (name: string) => {
-      message.success("成功删除");
-      onRefresh();
-    },
-    toDetail: (imgUrl: string) => {
-      console.log(imgUrl);
+    delete: (id: number) => {
+      deleteImg(id).then(() => {
+        message.success("成功删除");
+        onRefresh();
+      });
     },
   }));
   const columns = [
     {
       title: "缩略图",
-      dataIndex: "img",
-      render: (imgUrl: string) => (
-        <img
-          src={imgUrl}
-          className={styles.img}
-          onClick={() => store.toDetail(imgUrl)}
-        />
+      dataIndex: "thumb",
+      render: (imgUrl: string, record: ImgDataListProps) => (
+        <Link to={`/detail/${record.id}`}>
+          <img src={imgUrl} className={styles.img} />
+        </Link>
       ),
     },
     {
@@ -61,10 +60,20 @@ const ImgTable: FC<ImgTableProps> = ({ data, onRefresh }) => {
     {
       title: "影像标签",
       dataIndex: "tag",
+      render: (tags: string[]) => (
+        <>
+          {tags &&
+            tags.map((tag) => (
+              <Tag color="geekblue" key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+            ))}
+        </>
+      ),
     },
     {
       title: "录入时间",
-      dataIndex: "time",
+      dataIndex: "createTime",
     },
     {
       title: "属性",
@@ -73,7 +82,7 @@ const ImgTable: FC<ImgTableProps> = ({ data, onRefresh }) => {
     {
       title: "操作",
       key: "action",
-      render: (text: string, record: TableProps) => (
+      render: (text: string, record: ImgDataListProps) => (
         <>
           <a onClick={() => store.edit(record)}>编辑</a>
           <Divider type="vertical" />
@@ -81,7 +90,7 @@ const ImgTable: FC<ImgTableProps> = ({ data, onRefresh }) => {
           <Divider type="vertical" />
           <Popconfirm
             title="确定删除吗？"
-            onConfirm={() => store.delete(record.name)}
+            onConfirm={() => store.delete(record.id)}
           >
             <a>删除</a>
           </Popconfirm>
@@ -111,7 +120,8 @@ const ImgTable: FC<ImgTableProps> = ({ data, onRefresh }) => {
         </section>
       )}
       <Table
-        rowKey="name"
+        rowKey={(record) => record.name}
+        loading={loading}
         rowSelection={{
           selectedRowKeys: store.selectedRowKeys,
           onChange: store.onSelectChange,

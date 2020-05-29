@@ -31,13 +31,8 @@
       margin-right: 30px;
       margin-bottom: 0;
     }
-    span {
-      margin-right: 30px;
-    }
-    span:hover {
-      cursor: pointer;
+    .active {
       color: #1890ff;
-      transition: all 0.5s;
     }
   }
 }
@@ -87,5 +82,46 @@
     width: 80px;
     height: 50px;
     cursor: pointer;
+  }
+}
+
+.header {
+  text-align: center;
+  height: 56px;
+  line-height: 56px;
+  .back_icon {
+    float: left;
+    margin-top: 21px;
+    margin-left: 10px;
+  }
+  .title {
+    font-size: 16px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+.content_box {
+  display: flex;
+  flex-flow: row nowrap;
+  .tools {
+    width: 180px;
+  }
+  .map_box {
+    flex: 1;
+    height: 500px;
+    margin: 0 10px;
+    position: relative;
+    .map {
+      height: 100%;
+    }
+    .btn_group {
+      position: absolute;
+      bottom: -50px;
+      right: 20px;
+      button {
+        margin-left: 20px;
+      }
+    }
   }
 }

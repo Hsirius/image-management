@@ -27,18 +27,15 @@ const Upload = () => {
     },
   ];
   return useObserver(() => (
-    <>
-      <Header />
-      <Card title="上传影像" bordered={false}>
-        <Tabs defaultActiveKey="0">
-          {tabs.map((item) => (
-            <TabPane tab={item.title} key={item.id}>
-              {item.component}
-            </TabPane>
-          ))}
-        </Tabs>
-      </Card>
-    </>
+    <Card title="上传影像" bordered={false}>
+      <Tabs defaultActiveKey="0">
+        {tabs.map((item) => (
+          <TabPane tab={item.title} key={item.id}>
+            {item.component}
+          </TabPane>
+        ))}
+      </Tabs>
+    </Card>
   ));
 };
 

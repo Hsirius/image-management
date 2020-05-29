@@ -1,4 +1,16 @@
 .form {
   width: 800px;
   margin: 0 auto;
+  .inline_inp,
+  .inline_btn {
+    display: inline-block;
+    margin-right: 30px;
+  }
+  .noMargin {
+    margin-right: 0;
+    display: inline-block;
+  }
+  .inline_inp {
+    width: 250px;
+  }
 }

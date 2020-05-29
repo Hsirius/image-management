@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
 import { useObserver } from "mobx-react-lite";
 import { Modal, Form, Input } from "antd";
-import { TableProps } from ".";
+import { ImgDataListProps } from "../../service/Home";
 
 interface EditModelProps {
   visible: boolean;
-  data: TableProps;
+  data: ImgDataListProps;
   onCancel: () => void;
   onOk: () => void;
 }
@@ -13,7 +13,7 @@ interface EditModelProps {
 const EditModel: FC<EditModelProps> = ({ visible, data, onCancel, onOk }) => {
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = useState(false);
-  const onFinish = (values: TableProps) => {
+  const onFinish = (values: ImgDataListProps) => {
     setSubmitting(true);
     console.log(values);
     setSubmitting(false);

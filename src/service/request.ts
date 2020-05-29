@@ -2,7 +2,7 @@ import axios from "axios";
 import { stringify } from "qs";
 
 const request = axios.create({
-  baseURL: "http://172.20.10.7:8080",
+  baseURL: "http://172.20.10.6:8080",
   //携带cookie
   withCredentials: true,
   headers: {

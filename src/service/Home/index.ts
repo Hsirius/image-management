@@ -41,4 +41,6 @@ export const deleteImg = (id: number) =>
 
 //根据影像id获得影像详情
 export const getImgInfoById = (id: number) =>
-  request.get<{}>(`/geoai/v1/image/${id}`);
+  request.get<{ list: ImgDataListProps[]; total: number }>(
+    `/geoai/v1/image/${id}`
+  );

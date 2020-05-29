@@ -4,10 +4,9 @@ import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useLocalStore, useObserver } from "mobx-react-lite";
 import React, { useEffect, FC } from "react";
-import img from "./img.jpg";
 import styles from "./index.module.scss";
 import { RouteComponentProps } from "react-router-dom";
-import { getImgInfoById } from "../../service/Home";
+import { getImgInfoById, ImgDataListProps } from "../../service/Home";
 
 const { Panel } = Collapse;
 
@@ -25,18 +24,19 @@ const ImgDetail: FC<RouteComponentProps<{ imgId: string }>> = ({
 }) => {
   const store = useLocalStore(() => ({
     map: {} as L.Map,
+    data: {} as ImgDataListProps,
     layerLists: [] as any,
     labelLists: [] as LabelProps[],
     editLabelId: "", // 当前编辑的label id
     editLabelVal: "", // 编辑后的label val
     initData: () => {
-      console.log(imgId);
       getImgInfoById(Number(imgId)).then((res) => {
-        console.log(res);
+        store.data = res.data.list[0];
+        // 初始化map
+        store.initMap(store.data.thumb);
       });
     },
-    // 初始化map
-    initMap: () => {
+    initMap: (img: string) => {
       const map = L.map(`map`, {
         minZoom: 10,
         maxZoom: 19,
@@ -63,7 +63,6 @@ const ImgDetail: FC<RouteComponentProps<{ imgId: string }>> = ({
     wrapperCol: { span: 12 },
   };
   useEffect(() => {
-    store.initMap();
     store.initData();
   }, [imgId]);
 
@@ -74,7 +73,7 @@ const ImgDetail: FC<RouteComponentProps<{ imgId: string }>> = ({
           className={styles.back_icon}
           onClick={() => history.go(-1)}
         />
-        <span className={styles.title}>{imgId}</span>
+        <span className={styles.title}>{store.data.name}</span>
       </section>
       <section className={styles.content_box}>
         <div className={styles.tools}>

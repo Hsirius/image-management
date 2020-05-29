@@ -6,6 +6,7 @@ import styles from "./index.module.scss";
 import { RadioChangeEvent } from "antd/lib/radio";
 import TagComponent from "../components/tagComponent";
 import { localUpload } from "../../service/Upload";
+import { UploadFile } from "antd/lib/upload/interface";
 
 const LocalUpload = () => {
   const formItemLayout = {
@@ -19,29 +20,27 @@ const LocalUpload = () => {
     return e && e.fileList;
   };
   const onFinish = (values: any) => {
-    // const formData = new FormData();
-    // values.dragger.forEach((file: File) => {
-    //   formData.append("files", file);
-    // });
-    // console.log(formData.get("files"));
-    localUpload({
-      files: values.dragger,
-    }).then((res) => {
-      if (res.data.success) {
-        message.success("上传成功");
-      } else {
-        message.error("上传失败");
-      }
+    const formData = new FormData();
+    store.fileList.forEach((file: any) => {
+      formData.append("files", file);
     });
+    localUpload(formData)
+      .then((res) => {
+        message.success("上传成功");
+      })
+      .catch(() => {
+        message.error("上传失败");
+      });
   };
   const store = useLocalStore(() => ({
     property: "public",
     tagData: ["tag1", "tag2", "tag3"],
-    fileList: [],
+    fileList: [] as UploadFile[],
     updateTagData: (data: string[]) => {
       store.tagData = data;
     },
-    handleBeforeUpload: () => {
+    handleBeforeUpload: (file: UploadFile) => {
+      store.fileList.push(file);
       return false;
     },
   }));

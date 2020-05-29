@@ -21,7 +21,13 @@ const Header = withRouter(({ history }) => {
   );
   return useObserver(() => (
     <header className={styles.header}>
-      <h1>赛博智能影像管理平台</h1>
+      <h1
+        onClick={() => {
+          history.push("/");
+        }}
+      >
+        赛博智能影像管理平台
+      </h1>
       <Dropdown overlay={userDropDown}>
         <span className={styles.user}>
           <Avatar size="small" icon={<UserOutlined />} />

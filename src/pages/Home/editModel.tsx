@@ -15,7 +15,6 @@ const EditModel: FC<EditModelProps> = ({ visible, data, onCancel, onOk }) => {
   const [submitting, setSubmitting] = useState(false);
   const onFinish = (values: ImgDataListProps) => {
     setSubmitting(true);
-    console.log(values);
     setSubmitting(false);
     onOk();
   };
